@@ -22,5 +22,5 @@ class Settings(commands.Cog):
         notificacoes_status = "ativadas" if notificacoes else "desativadas"
         await ctx.send(f"{ctx.author.mention}, suas notificações de eventos estão **{notificacoes_status}**.")
 
-def setup(bot):
-    bot.add_cog(Settings(bot))
+async def setup(bot):
+    await bot.add_cog(Settings(bot))
