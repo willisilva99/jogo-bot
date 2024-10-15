@@ -35,5 +35,6 @@ class Marketplace(commands.Cog):
             leiloes_msg += f"ID: {leilao['id']}, Item: {leilao['item_nome']}, Lance Atual: {leilao['preco_atual']} embers\n"
         await ctx.send(leiloes_msg)
 
-def setup(bot):
-    bot.add_cog(Marketplace(bot))
+async def setup(bot):
+    await bot.add_cog(Marketplace(bot))
+
