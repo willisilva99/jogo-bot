@@ -24,10 +24,11 @@ cogs = [
     "transaction_logs", "help", "weather", "investment"
 ]
 
+# Função para carregar os cogs
 async def load_cogs():
     for cog in cogs:
         try:
-            await bot.load_extension(f"cogs.{cog}")  # Use await para carregar o cog
+            await bot.load_extension(f"cogs.{cog}")
             print(f"Cog {cog} carregado com sucesso.")
         except Exception as e:
             print(f"Erro ao carregar o cog {cog}: {e}")
@@ -60,7 +61,13 @@ async def on_ready():
 
 async def setup():
     # Configurar a conexão com o banco de dados
-    bot.db = await asyncpg.create_pool(dsn=os.getenv("DATABASE_URL"))
+    try:
+        bot.db = await asyncpg.create_pool(dsn=os.getenv("DATABASE_URL"))
+        print("Conexão com o banco de dados estabelecida com sucesso.")
+    except Exception as e:
+        print(f"Erro ao conectar ao banco de dados: {e}")
+        return
+
     await load_cogs()  # Chama a função load_cogs para carregar os cogs
     await bot.start(os.getenv("TOKEN"))
 
