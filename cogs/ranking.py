@@ -26,5 +26,6 @@ class Ranking(commands.Cog):
         else:
             await ctx.send("Tipo de ranking inválido. Use `!ranking saldo` ou `!ranking nivel`.")
 
-def setup(bot):
-    bot.add_cog(Ranking(bot))
+async def setup(bot):
+    await bot.add_cog(Ranking(bot))
+
