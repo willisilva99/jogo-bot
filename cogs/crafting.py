@@ -37,5 +37,6 @@ class Crafting(commands.Cog):
             await self.bot.db.execute("UPDATE crafting_materials SET quantidade = quantidade - $1 WHERE user_id = $2 AND nome = $3", quantidade, user_id, material)
         await ctx.send(f"{ctx.author.mention}, você craftou uma **{item}**!")
 
-def setup(bot):
-    bot.add_cog(Crafting(bot))
+async def setup(bot):
+    await bot.add_cog(Crafting(bot))
+
