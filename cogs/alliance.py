@@ -37,5 +37,6 @@ class Alliance(commands.Cog):
                 mensagem += f"**{nome}**: {', '.join(membros_nomes)}\n"
             await ctx.send(mensagem)
 
-def setup(bot):
-    bot.add_cog(Alliance(bot))
+async def setup(bot):
+    await bot.add_cog(Alliance(bot))
+
