@@ -42,5 +42,6 @@ class Holidays(commands.Cog):
     async def on_ready(self):
         self.verificar_feriados.start()
 
-def setup(bot):
-    bot.add_cog(Holidays(bot))
+async def setup(bot):
+    await bot.add_cog(Holidays(bot))
+
