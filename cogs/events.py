@@ -52,5 +52,6 @@ class Events(commands.Cog):
     async def on_ready(self):
         self.verificar_evento.start()
 
-def setup(bot):
-    bot.add_cog(Events(bot))
+async def setup(bot):
+    await bot.add_cog(Events(bot))
+
