@@ -36,5 +36,6 @@ class Survival(commands.Cog):
     async def on_ready(self):
         self.terminar_sobrevivencia.start()
 
-def setup(bot):
-    bot.add_cog(Survival(bot))
+async def setup(bot):
+    await bot.add_cog(Survival(bot))
+
