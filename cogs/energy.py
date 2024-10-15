@@ -25,5 +25,6 @@ class Energy(commands.Cog):
     async def on_ready(self):
         self.regenerar_energia.start()
 
-def setup(bot):
-    bot.add_cog(Energy(bot))
+async def setup(bot):
+    await bot.add_cog(Energy(bot))
+
