@@ -27,5 +27,6 @@ class Titles(commands.Cog):
         await self.adicionar_titulo(ctx.author.id, titulo)
         await ctx.send(f"{ctx.author.mention}, você conquistou o título: **{titulo}**!")
 
-def setup(bot):
-    bot.add_cog(Titles(bot))
+async def setup(bot):
+    await bot.add_cog(Titles(bot))
+
