@@ -1,10 +1,11 @@
 # bot/bot.py
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import os
 import asyncpg
 import asyncio
+import random
 
 # Configuração de intents e prefixo
 intents = discord.Intents.default()
@@ -31,10 +32,31 @@ for cog in cogs:
     except Exception as e:
         print(f"Erro ao carregar o cog {cog}: {e}")
 
+# Mensagens de status aleatórias
+status_messages = [
+    "sobrevivendo ao apocalipse",
+    "explorando novas bases",
+    "caçando zumbis",
+    "coletando recursos",
+    "protegendo os sobreviventes",
+    "negociando embers",
+    "construindo alianças",
+    "lutando contra hordas",
+    "explorando o mapa",
+    "realizando missões"
+]
+
+# Tarefa para mudar o status do bot periodicamente
+@tasks.loop(minutes=10)
+async def change_status():
+    new_status = random.choice(status_messages)
+    await bot.change_presence(activity=discord.Game(new_status))
+
 @bot.event
 async def on_ready():
     print(f"Bot conectado como {bot.user}")
     print("Bot está pronto e todos os cogs foram carregados.")
+    change_status.start()  # Iniciar a tarefa de status aleatório
 
 async def setup():
     # Configurar a conexão com o banco de dados
