@@ -31,5 +31,6 @@ class Reputation(commands.Cog):
         reputacao = await self.bot.db.fetchval("SELECT reputacao FROM jogadores WHERE user_id = $1", membro.id) or 0
         await ctx.send(f"{membro.display_name} tem **{reputacao}** pontos de reputação.")
 
-def setup(bot):
-    bot.add_cog(Reputation(bot))
+async def setup(bot):
+    await bot.add_cog(Reputation(bot))
+
