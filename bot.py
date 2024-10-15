@@ -24,13 +24,13 @@ cogs = [
     "transaction_logs", "help", "weather", "investment"
 ]
 
-# Carregar cada cog
-for cog in cogs:
-    try:
-        bot.load_extension(f"cogs.{cog}")
-        print(f"Cog {cog} carregado com sucesso.")
-    except Exception as e:
-        print(f"Erro ao carregar o cog {cog}: {e}")
+async def load_cogs():
+    for cog in cogs:
+        try:
+            await bot.load_extension(f"cogs.{cog}")  # Use await para carregar o cog
+            print(f"Cog {cog} carregado com sucesso.")
+        except Exception as e:
+            print(f"Erro ao carregar o cog {cog}: {e}")
 
 # Mensagens de status aleatórias
 status_messages = [
@@ -61,6 +61,7 @@ async def on_ready():
 async def setup():
     # Configurar a conexão com o banco de dados
     bot.db = await asyncpg.create_pool(dsn=os.getenv("DATABASE_URL"))
+    await load_cogs()  # Chama a função load_cogs para carregar os cogs
     await bot.start(os.getenv("TOKEN"))
 
 # Iniciar o bot
