@@ -24,5 +24,5 @@ class TransactionLogs(commands.Cog):
             msg += f"{registro['acao'].capitalize()}: {registro['quantidade']} embers em {registro['timestamp']}\n"
         await ctx.send(msg)
 
-def setup(bot):
-    bot.add_cog(TransactionLogs(bot))
+async def setup(bot):
+    await bot.add_cog(TransactionLogs(bot))
