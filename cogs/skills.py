@@ -30,5 +30,5 @@ class Skills(commands.Cog):
         else:
             await ctx.send(f"{ctx.author.mention}, sua classe é **{classe}**.")
 
-def setup(bot):
-    bot.add_cog(Skills(bot))
+async def setup(bot):
+    await bot.add_cog(Skills(bot))
