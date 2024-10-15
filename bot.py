@@ -3,6 +3,8 @@
 import discord
 from discord.ext import commands
 import os
+import asyncpg
+import asyncio
 
 # Configuração de intents e prefixo
 intents = discord.Intents.default()
@@ -32,7 +34,14 @@ for cog in cogs:
 @bot.event
 async def on_ready():
     print(f"Bot conectado como {bot.user}")
+    print("Bot está pronto e todos os cogs foram carregados.")
 
-# Executar o bot
-TOKEN = os.getenv('TOKEN')
-bot.run(TOKEN)
+async def setup():
+    # Configurar a conexão com o banco de dados
+    bot.db = await asyncpg.create_pool(dsn=os.getenv("DATABASE_URL"))
+    await bot.start(os.getenv("TOKEN"))
+
+# Iniciar o bot
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(setup())
