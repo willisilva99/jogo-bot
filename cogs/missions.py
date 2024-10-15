@@ -27,5 +27,6 @@ class Missions(commands.Cog):
         else:
             await ctx.send(f"{ctx.author.mention}, você ainda não completou a missão **{missao}**.")
             
-def setup(bot):
-    bot.add_cog(Missions(bot))
+async def setup(bot):
+    await bot.add_cog(Missions(bot))  # Use await
+
