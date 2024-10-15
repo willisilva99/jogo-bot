@@ -6,40 +6,26 @@ from discord.ext import commands, tasks
 class Seasons(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.current_season = "Primavera"
-        self.pass_enabled = False
+        self.season = "Primavera"  # Temporada inicial
+        self.change_season.start()
+
+    @tasks.loop(hours=168)  # Troca de temporada a cada semana (168 horas)
+    async def change_season(self):
+        seasons = ["Primavera", "Verão", "Outono", "Inverno"]
+        current_index = seasons.index(self.season)
+        self.season = seasons[(current_index + 1) % len(seasons)]
+        channel = discord.utils.get(self.bot.get_all_channels(), name="geral")  # Alterar para o canal desejado
+        if channel:
+            await channel.send(f"🍃 A nova temporada começou! Bem-vindo à **{self.season}**!")
 
     @commands.command()
-    async def iniciar_temporada(self, ctx, temporada: str):
-        if self.pass_enabled:
-            await ctx.send("Já há uma temporada em andamento.")
-            return
+    async def temporada(self, ctx):
+        """Mostra a temporada atual"""
+        await ctx.send(f"A temporada atual é: **{self.season}**")
 
-        self.current_season = temporada.capitalize()
-        self.pass_enabled = True
-        await ctx.send(f"🏆 **Temporada {self.current_season}** iniciada! Use `!pass` para obter o Passe de Temporada.")
-
-    @commands.command()
-    async def pass(self, ctx):
-        if not self.pass_enabled:
-            await ctx.send("Não há uma temporada em andamento.")
-            return
-
-        user_id = ctx.author.id
-        recompensa = 200
-        await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + $1 WHERE user_id = $2", recompensa, user_id)
-        await ctx.send(f"{ctx.author.mention}, você comprou o Passe de Temporada e ganhou **{recompensa} embers**!")
-
-    @tasks.loop(days=30)
-    async def finalizar_temporada(self):
-        if self.pass_enabled:
-            await self.bot.get_channel(YOUR_CHANNEL_ID).send(f"🏁 **Temporada {self.current_season}** terminou!")
-            self.pass_enabled = False
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.finalizar_temporada.start()
+    @change_season.before_loop
+    async def before_change_season(self):
+        await self.bot.wait_until_ready()
 
 async def setup(bot):
     await bot.add_cog(Seasons(bot))
-
