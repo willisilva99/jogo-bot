@@ -29,5 +29,6 @@ class PvP(commands.Cog):
             await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + 50 WHERE user_id = $1", vencedor.id)
             await ctx.send(f"{vencedor.mention} venceu o duelo e ganhou **50 embers**!")
 
-def setup(bot):
-    bot.add_cog(PvP(bot))
+async def setup(bot):
+    await bot.add_cog(PvP(bot))
+
