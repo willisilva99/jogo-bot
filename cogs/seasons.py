@@ -40,5 +40,6 @@ class Seasons(commands.Cog):
     async def on_ready(self):
         self.finalizar_temporada.start()
 
-def setup(bot):
-    bot.add_cog(Seasons(bot))
+async def setup(bot):
+    await bot.add_cog(Seasons(bot))
+
