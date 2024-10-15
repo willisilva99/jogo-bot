@@ -31,5 +31,5 @@ class Help(commands.Cog):
             msg = detalhes.get(comando.lower(), "Comando não encontrado.")
         await ctx.send(msg)
 
-def setup(bot):
-    bot.add_cog(Help(bot))
+async def setup(bot):
+    await bot.add_cog(Help(bot))
