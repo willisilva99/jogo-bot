@@ -48,5 +48,6 @@ class Tournaments(commands.Cog):
     async def on_ready(self):
         self.terminar_torneio.start()
 
-def setup(bot):
-    bot.add_cog(Tournaments(bot))
+async def setup(bot):
+    await bot.add_cog(Tournaments(bot))
+
