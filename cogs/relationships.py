@@ -30,5 +30,6 @@ class Relationships(commands.Cog):
         except:
             await ctx.send(f"{parceiro.mention} não respondeu ao pedido de casamento.")
 
-def setup(bot):
-    bot.add_cog(Relationships(bot))
+async def setup(bot):
+    await bot.add_cog(Relationships(bot))
+
