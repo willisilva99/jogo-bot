@@ -48,5 +48,5 @@ class Economy(commands.Cog):
         await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + $1 WHERE user_id = $2", recompensa, user_id)
         await ctx.send(f"{ctx.author.mention}, você trabalhou e ganhou **{recompensa} embers**!")
 
-def setup(bot):
-    bot.add_cog(Economy(bot))
+async def setup(bot):
+    await bot.add_cog(Economy(bot))  # Aguarde o add_cog
