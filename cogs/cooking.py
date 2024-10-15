@@ -15,5 +15,6 @@ class Cooking(commands.Cog):
             await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + 50 WHERE user_id = $1", ctx.author.id)
             await ctx.send(f"{ctx.author.mention}, você cozinhou uma sopa e ganhou **50 embers**!")
 
-def setup(bot):
-    bot.add_cog(Cooking(bot))
+async def setup(bot):
+    await bot.add_cog(Cooking(bot))
+
