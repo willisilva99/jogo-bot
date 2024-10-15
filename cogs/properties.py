@@ -30,5 +30,5 @@ class Properties(commands.Cog):
         else:
             await ctx.send(f"{ctx.author.mention}, sua casa é uma **{propriedade['tipo']}**, Nível: {propriedade['nivel']}.")
 
-def setup(bot):
-    bot.add_cog(Properties(bot))
+async def setup(bot):
+    await bot.add_cog(Properties(bot))
