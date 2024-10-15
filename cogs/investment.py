@@ -36,5 +36,6 @@ class Investment(commands.Cog):
     async def on_ready(self):
         self.atualizar_investimentos.start()
 
-def setup(bot):
-    bot.add_cog(Investment(bot))
+async def setup(bot):
+    await bot.add_cog(Investment(bot))
+
