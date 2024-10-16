@@ -23,6 +23,13 @@ class Economy(commands.Cog):
     @commands.command()
     async def depositar(self, ctx, quantidade: int):
         user_id = ctx.author.id
+
+        # Verifica se o usuário existe
+        usuario_existe = await self.bot.db.fetchval("SELECT COUNT(*) FROM jogadores WHERE user_id = $1", user_id)
+        if usuario_existe is None or usuario_existe == 0:
+            await ctx.send(f"{ctx.author.mention}, você não tem uma conta registrada.")
+            return
+
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
         saldo = saldo if saldo else 0
 
@@ -30,12 +37,20 @@ class Economy(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes para depositar.")
             return
 
+        # Atualiza o saldo e o banco
         await self.bot.db.execute("UPDATE jogadores SET saldo = saldo - $1, banco = banco + $1 WHERE user_id = $2", quantidade, user_id)
         await ctx.send(f"{ctx.author.mention}, você depositou **{quantidade} embers** no banco.")
 
     @commands.command()
     async def sacar(self, ctx, quantidade: int):
         user_id = ctx.author.id
+
+        # Verifica se o usuário existe
+        usuario_existe = await self.bot.db.fetchval("SELECT COUNT(*) FROM jogadores WHERE user_id = $1", user_id)
+        if usuario_existe is None or usuario_existe == 0:
+            await ctx.send(f"{ctx.author.mention}, você não tem uma conta registrada.")
+            return
+
         banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
         banco = banco if banco else 0
 
@@ -43,6 +58,7 @@ class Economy(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes no banco para sacar.")
             return
 
+        # Atualiza o banco e o saldo
         await self.bot.db.execute("UPDATE jogadores SET banco = banco - $1, saldo = saldo + $1 WHERE user_id = $2", quantidade, user_id)
         await ctx.send(f"{ctx.author.mention}, você sacou **{quantidade} embers** do banco.")
 
@@ -51,6 +67,8 @@ class Economy(commands.Cog):
     async def trabalhar(self, ctx):
         user_id = ctx.author.id
         recompensa = random.randint(10, 30)
+
+        # Verifica se o usuário já existe
         saldo_existente = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
         
         if saldo_existente is None:
@@ -67,4 +85,4 @@ class Economy(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, você já trabalhou recentemente. Tente novamente em **{tempo_restante} minutos**.")
 
 async def setup(bot):
-    await bot.add_cog(Economy(bot))
+    await bot.add_cog(Economy(bot))  # Aguarde o add_cog
