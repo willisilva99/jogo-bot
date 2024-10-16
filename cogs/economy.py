@@ -10,14 +10,14 @@ class Economy(commands.Cog):
     async def saldo(self, ctx):
         user_id = ctx.author.id
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
-        saldo = saldo if saldo is not None else 0  # Verifica se saldo é None
+        saldo = saldo if saldo is not None else 0
         await ctx.send(f"{ctx.author.mention}, você tem **{saldo} embers**.")
 
     @commands.command()
     async def saldo_banco(self, ctx):
         user_id = ctx.author.id
         banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
-        banco = banco if banco is not None else 0  # Verifica se banco é None
+        banco = banco if banco is not None else 0
         await ctx.send(f"{ctx.author.mention}, você tem **{banco} embers** no banco.")
 
     @commands.command()
@@ -31,7 +31,7 @@ class Economy(commands.Cog):
             return
 
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
-        saldo = saldo if saldo is not None else 0  # Verifica se saldo é None
+        saldo = saldo if saldo is not None else 0
 
         if saldo < quantidade:
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes para depositar.")
@@ -52,7 +52,7 @@ class Economy(commands.Cog):
             return
 
         banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
-        banco = banco if banco is not None else 0  # Verifica se banco é None
+        banco = banco if banco is not None else 0
 
         if banco < quantidade:
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes no banco para sacar.")
