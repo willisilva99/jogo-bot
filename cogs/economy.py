@@ -14,6 +14,13 @@ class Economy(commands.Cog):
         await ctx.send(f"{ctx.author.mention}, você tem **{saldo} embers**.")
 
     @commands.command()
+    async def saldo_banco(self, ctx):
+        user_id = ctx.author.id
+        banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
+        banco = banco if banco else 0
+        await ctx.send(f"{ctx.author.mention}, você tem **{banco} embers** no banco.")
+
+    @commands.command()
     async def depositar(self, ctx, quantidade: int):
         user_id = ctx.author.id
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
@@ -40,19 +47,15 @@ class Economy(commands.Cog):
         await ctx.send(f"{ctx.author.mention}, você sacou **{quantidade} embers** do banco.")
 
     @commands.command()
-    @commands.cooldown(1, 3600, commands.BucketType.user)  # Cooldown de 1 hora por usuário
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def trabalhar(self, ctx):
         user_id = ctx.author.id
-        recompensa = random.randint(10, 30)  # Recompensa reduzida para entre 10 e 30 embers
-
-        # Verifica se o usuário já existe no banco de dados
+        recompensa = random.randint(10, 30)
         saldo_existente = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
         
         if saldo_existente is None:
-            # Insere o usuário se ele não existir
             await self.bot.db.execute("INSERT INTO jogadores (user_id, saldo) VALUES ($1, $2)", user_id, recompensa)
         else:
-            # Atualiza o saldo existente
             await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + $1 WHERE user_id = $2", recompensa, user_id)
         
         await ctx.send(f"{ctx.author.mention}, você trabalhou e ganhou **{recompensa} embers**!")
@@ -64,4 +67,4 @@ class Economy(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, você já trabalhou recentemente. Tente novamente em **{tempo_restante} minutos**.")
 
 async def setup(bot):
-    await bot.add_cog(Economy(bot))  # Aguarde o add_cog
+    await bot.add_cog(Economy(bot))
