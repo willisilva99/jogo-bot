@@ -10,14 +10,14 @@ class Economy(commands.Cog):
     async def saldo(self, ctx):
         user_id = ctx.author.id
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
-        saldo = saldo if saldo else 0
+        saldo = saldo if saldo is not None else 0  # Verifica se saldo é None
         await ctx.send(f"{ctx.author.mention}, você tem **{saldo} embers**.")
 
     @commands.command()
     async def saldo_banco(self, ctx):
         user_id = ctx.author.id
         banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
-        banco = banco if banco else 0
+        banco = banco if banco is not None else 0  # Verifica se banco é None
         await ctx.send(f"{ctx.author.mention}, você tem **{banco} embers** no banco.")
 
     @commands.command()
@@ -31,7 +31,7 @@ class Economy(commands.Cog):
             return
 
         saldo = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
-        saldo = saldo if saldo else 0
+        saldo = saldo if saldo is not None else 0  # Verifica se saldo é None
 
         if saldo < quantidade:
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes para depositar.")
@@ -52,7 +52,7 @@ class Economy(commands.Cog):
             return
 
         banco = await self.bot.db.fetchval("SELECT banco FROM jogadores WHERE user_id = $1", user_id)
-        banco = banco if banco else 0
+        banco = banco if banco is not None else 0  # Verifica se banco é None
 
         if banco < quantidade:
             await ctx.send(f"{ctx.author.mention}, você não tem embers suficientes no banco para sacar.")
@@ -72,7 +72,8 @@ class Economy(commands.Cog):
         saldo_existente = await self.bot.db.fetchval("SELECT saldo FROM jogadores WHERE user_id = $1", user_id)
         
         if saldo_existente is None:
-            await self.bot.db.execute("INSERT INTO jogadores (user_id, saldo) VALUES ($1, $2)", user_id, recompensa)
+            # Insere um novo jogador se não existir
+            await self.bot.db.execute("INSERT INTO jogadores (user_id, saldo, banco, energia, nivel) VALUES ($1, $2, $3, $4, $5)", user_id, recompensa, 0, 100, 1)
         else:
             await self.bot.db.execute("UPDATE jogadores SET saldo = saldo + $1 WHERE user_id = $2", recompensa, user_id)
         
