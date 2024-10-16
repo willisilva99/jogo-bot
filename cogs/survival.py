@@ -30,7 +30,7 @@ class Survival(commands.Cog):
     async def terminar_sobrevivencia(self):
         if self.sobrevivencia_ativa:
             self.sobrevivencia_ativa = False
-            await self.bot.get_channel(YOUR_CHANNEL_ID).send("🏁 O evento de sobrevivência terminou! Obrigado a todos que participaram.")
+            await self.bot.get_channel(1186636197934661632).send("🏁 O evento de sobrevivência terminou! Obrigado a todos que participaram.")
 
     @commands.Cog.listener()
     async def on_ready(self):
