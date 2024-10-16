@@ -11,7 +11,7 @@ intents.messages = True
 intents.guilds = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="n!", intents=intents)
 
 # Lista de cogs
 cogs = [
